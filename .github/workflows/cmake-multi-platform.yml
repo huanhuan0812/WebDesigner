@@ -94,15 +94,28 @@ jobs:
     - name: Package Linux application
       if: matrix.os == 'ubuntu-22.04'
       run: |
-        ls
+        # 创建 app 目录
         mkdir -p app
         cp build/WebDesigner app/
+
+        # 创建 .desktop 文件（使用系统默认图标）
+        echo "[Desktop Entry]
+        Type=Application
+        Name=WebDesigner
+        Exec=WebDesigner
+        Icon=application-default-icon  # 关键点：使用系统默认图标
+        Categories=Development;
+        Terminal=false" > app/WebDesigner.desktop
+
+        # 安装依赖并打包
         sudo apt update
-        sudo apt install libfuse2
+        sudo apt install -y libfuse2
         wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
         chmod +x linuxdeployqt-continuous-x86_64.AppImage
-        sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
-        linuxdeployqt app/WebDesigner -appimage
+        ./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner.desktop -appimage
+        ls build
+        # 重命名生成的 AppImage
+        mv WebDesigner*.AppImage WebDesigner-linux.AppImage
     
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
