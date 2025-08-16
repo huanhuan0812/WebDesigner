@@ -32,6 +32,21 @@ jobs:
       with:
         arch: 'win64_mingw'
 
+    - name: update mingw
+      if: matrix.os == 'windows-latest'
+      uses: msys2/setup-msys2@v2
+      with:
+        mupdate: true
+        install: >-
+          mingw-w64-ucrt-x86_64-toolchain
+          mingw-w64-ucrt-x86_64-gcc
+          mingw-w64-ucrt-x86_64-g++
+
+    - name: Add MinGW to PATH
+      if: matrix.os == 'windows-latest'
+      run: |
+        echo "${{ runner.temp }}/msys64/ucrt64/bin" >> $GITHUB_PATH
+
     - name: Install Qt linux 
       if: matrix.os == 'ubuntu-latest'
       uses: jurplel/install-qt-action@v4
@@ -94,11 +109,6 @@ jobs:
         cmake --install . --prefix "build" --component runtime
         ls
         mkdir -p app
-        # 检查应用结构
-        find build/WebDesigner.app -type f
-
-        # 检查可执行文件依赖
-        otool -L build/WebDesigner.app/Contents/MacOS/WebDesigner
         macdeployqt build/WebDesigner.app
         ls build
         cp build/WebDesigner.app/Contents/MacOS/WebDesigner app/
