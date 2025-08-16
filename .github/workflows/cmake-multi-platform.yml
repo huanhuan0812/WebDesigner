@@ -108,7 +108,7 @@ jobs:
         Type=Application
         Name=WebDesigner
         Exec=WebDesigner
-        Icon=WebDesigner.png  # 指向生成的图标文件（不带扩展名）
+        Icon=WebDesigner  # 指向生成的图标文件（不带扩展名）
         Comment=A web design tool
         Categories=Development;
         Terminal=false" > app/WebDesigner.desktop
