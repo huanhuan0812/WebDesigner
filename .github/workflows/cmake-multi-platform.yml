@@ -28,7 +28,6 @@ jobs:
       with:
         version: '6.8.3'  # 明确指定Qt版本
         arch: 'win64_mingw'
-        modules: 'qtbase qttools'
 
     - name: Setup MinGW (Windows)
       if: matrix.os == 'windows-latest'
@@ -61,7 +60,6 @@ jobs:
       with:
         version: '6.8.3'
         target: 'desktop'
-        modules: 'qtbase qttools'
 
     # Install build tools
     - name: Install CMake
