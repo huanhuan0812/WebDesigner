@@ -45,10 +45,11 @@ jobs:
     - name: Add MinGW to PATH
       if: matrix.os == 'windows-latest'
       run: |
-        echo "${{ runner.temp }}/msys64/ucrt64/bin" >> $GITHUB_PATH
+          echo "${{ runner.temp }}/msys64/ucrt64/bin" >> $GITHUB_PATH
+          echo "QT_ROOT_DIR=D:/a/WebDesigner/Qt/6.8.3/mingw_64" >> $GITHUB_ENV
 
     - name: Install Qt linux 
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-22.04'
       uses: jurplel/install-qt-action@v4
       with:
         target: 'desktop'
@@ -91,7 +92,7 @@ jobs:
         windeployqt WebDesigner.exe
     
     - name: Package Linux application
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-22.04'
       run: |
         ls
         mkdir -p app
