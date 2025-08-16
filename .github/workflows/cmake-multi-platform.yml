@@ -113,9 +113,9 @@ jobs:
         wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
         chmod +x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner.desktop -appimage
-        ls build
-        # 重命名生成的 AppImage
-        mv WebDesigner*.AppImage WebDesigner-linux.AppImage
+        ls app
+        cd app
+        tree
     
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
