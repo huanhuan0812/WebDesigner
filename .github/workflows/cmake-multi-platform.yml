@@ -21,46 +21,49 @@ jobs:
     - name: Git checkout
       uses: actions/checkout@v3
 
-    - name: ls
-      run: ls
-
-
     # Install Qt for each platform
-    - name: Install Qt windows
+    - name: Install Qt (Windows)
       if: matrix.os == 'windows-latest'
       uses: jurplel/install-qt-action@v4
       with:
+        version: '6.8.3'  # 明确指定Qt版本
         arch: 'win64_mingw'
+        modules: 'qtbase qttools'
 
-    - name: update mingw
+    - name: Setup MinGW (Windows)
       if: matrix.os == 'windows-latest'
       uses: msys2/setup-msys2@v2
       with:
-        mupdate: true
+        update: true
         install: >-
           mingw-w64-ucrt-x86_64-toolchain
           mingw-w64-ucrt-x86_64-gcc
           mingw-w64-ucrt-x86_64-binutils
+        release: false  # 防止自动升级
 
-    - name: Add MinGW to PATH
+    - name: Set Windows Environment
       if: matrix.os == 'windows-latest'
       run: |
-          echo "${{ runner.temp }}/msys64/ucrt64/bin" >> $GITHUB_PATH
-          echo "QT_ROOT_DIR=D:/a/WebDesigner/Qt/6.8.3/mingw_64" >> $GITHUB_ENV
+        echo "${{ runner.temp }}/msys64/ucrt64/bin" >> $GITHUB_PATH
+        echo "QT_ROOT_DIR=${{ env.QT_ROOT }}" >> $GITHUB_ENV
+        echo "CMAKE_PREFIX_PATH=${{ env.QT_ROOT }}" >> $GITHUB_ENV
 
-    - name: Install Qt linux 
+    - name: Install Qt (Linux)
       if: matrix.os == 'ubuntu-22.04'
       uses: jurplel/install-qt-action@v4
       with:
+        version: '6.8.3'
         target: 'desktop'
 
-    - name: Install Qt mac
+    - name: Install Qt (macOS)
       if: matrix.os == 'macOS-latest'
       uses: jurplel/install-qt-action@v4
       with:
+        version: '6.8.3'
         target: 'desktop'
+        modules: 'qtbase qttools'
 
-    # Install build tools (CMake + Ninja)
+    # Install build tools
     - name: Install CMake
       uses: lukka/get-cmake@latest
       with:
@@ -69,70 +72,56 @@ jobs:
     - name: Install Ninja
       uses: seanmiddleditch/gha-setup-ninja@v3
 
-    # Create build directory
-    - name: Create build directory
-      run: mkdir build
-
-    # Configure with CMake (Ninja generator + Release mode)
+    # Configure with CMake
     - name: Configure with CMake
-      run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -B build
+      run: |
+        cmake -G Ninja \
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+          -DQT_NO_LINK_ENTRYPOINT=ON \  # 关键修复
+          -B build
 
     # Build with Ninja
     - name: Build application
       run: cd build && ninja
 
-    # Package application for each platform
-    - name: Package Windows executable
+    # Package for each platform
+    - name: Package Windows
       if: matrix.os == 'windows-latest'
       run: |
-        ls
         mkdir -p app
         cp build/WebDesigner.exe app/
-        cd app
-        windeployqt WebDesigner.exe
-    
-    - name: Package Linux application
+        windeployqt --dir app app/WebDesigner.exe
+
+    - name: Package Linux
       if: matrix.os == 'ubuntu-22.04'
       run: |
-        # 创建 app 目录
         mkdir -p app
         cp build/WebDesigner app/
-
-        # 创建 .desktop 文件（使用系统默认图标）
+        # 创建.desktop文件
         echo "[Desktop Entry]
         Type=Application
         Name=WebDesigner
         Exec=WebDesigner
-        Icon=application-default-icon  # 关键点：使用系统默认图标
+        Icon=application-default-icon
         Categories=Development;
         Terminal=false" > app/WebDesigner.desktop
-
-        # 安装依赖并打包
-        sudo apt update
-        sudo apt install -y libfuse2
+        # 部署Qt库
         wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
         chmod +x linuxdeployqt-continuous-x86_64.AppImage
         ./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner.desktop -appimage
-        ls app
-        cd app
-        tree
-    
-    - name: Package macOS application
+
+    - name: Package macOS
       if: matrix.os == 'macOS-latest'
       run: |
-        ls
         mkdir -p app
         macdeployqt build/WebDesigner.app -dmg
-        ls build
         cp build/WebDesigner.dmg app/
-        
-    
-    # Create archive
-    - name: Create compressed archive
+
+    # Create and upload artifact
+    - name: Create archive
       run: tar -czvf app-${{ matrix.os }}.tar.gz app
 
-    # Upload artifact
-    - name: Upload build artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-${{ matrix.os }}
