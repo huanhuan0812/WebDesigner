@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-22.04, macOS-latest, windows-latest]
       fail-fast: false
     name: Build on ${{ matrix.os }}
     steps:
@@ -108,7 +108,7 @@ jobs:
       run: |
         ls
         mkdir -p app
-        macdeployqt build/WebDesigner.app
+        macdeployqt build/WebDesigner.app -dmg
         ls build
         cp build/WebDesigner.app/Contents/MacOS/WebDesigner app/
         
