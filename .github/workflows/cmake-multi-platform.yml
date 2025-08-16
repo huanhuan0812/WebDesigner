@@ -121,8 +121,9 @@ jobs:
         export PATH="/opt/qt/6.8.3/gcc_64/bin:$PATH"
         export QMAKE="/opt/qt/6.8.3/gcc_64/bin/qmake"
         tree app
+        cd app
         # 打包 AppImage（添加 -verbose=2 查看详细日志）
-        ./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner -appimage
+        ./../linuxdeployqt-continuous-x86_64.AppImage WebDesigner -appimage
         tree
         # 重命名输出文件
         mv WebDesigner*.AppImage WebDesigner-linux-x86_64.AppImage
