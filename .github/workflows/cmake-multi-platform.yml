@@ -122,15 +122,15 @@ jobs:
         # 设置 Qt 环境变量
         export PATH="/opt/qt/6.8.3/gcc_64/bin:$PATH"
         export QMAKE="/opt/qt/6.8.3/gcc_64/bin/qmake"
-
+        tree app
         # 打包 AppImage（添加 -verbose=2 查看详细日志）
-        ./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner.desktop -appimage -verbose=2
+        #./linuxdeployqt-continuous-x86_64.AppImage app/WebDesigner.desktop -appimage -verbose=2
 
         # 重命名输出文件
-        mv WebDesigner*.AppImage WebDesigner-linux-x86_64.AppImage
+        #mv WebDesigner*.AppImage WebDesigner-linux-x86_64.AppImage
 
         # 验证生成的文件
-        ls -lh *.AppImage
+        #ls -lh *.AppImage
     
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
