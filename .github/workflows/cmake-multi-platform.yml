@@ -106,7 +106,6 @@ jobs:
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
       run: |
-        cmake --install . --prefix "build" --component runtime
         ls
         mkdir -p app
         macdeployqt build/WebDesigner.app
