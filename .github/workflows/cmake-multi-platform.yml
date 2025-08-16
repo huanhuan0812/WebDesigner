@@ -111,7 +111,7 @@ jobs:
         mkdir -p app
         macdeployqt build/WebDesigner.app -dmg
         ls build
-        cp build/WebDesigner.app/Contents/MacOS/WebDesigner app/
+        cp build/WebDesigner.dmg app/
         
     
     # Create archive
