@@ -67,3 +67,8 @@ install(TARGETS WebDesigner
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(WebDesigner)
 endif()
+
+if(MINGW)
+    add_link_options(-lmingw32)
+    add_link_options(-lqtmain)
+endif()
