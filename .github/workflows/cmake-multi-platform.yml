@@ -87,7 +87,11 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -B build
+        ls
+        cd build
         mingw32-make
+        ls
+        cd ..
 
     # Package application for each platform
     - name: Package Windows executable
