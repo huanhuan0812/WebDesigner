@@ -98,11 +98,11 @@ jobs:
         # 创建 app 目录并复制可执行文件
         mkdir -p app
         cp build/WebDesigner app/
-
+        ls app
         # 生成一个简单的默认图标（白色背景 + 应用名首字母）
         sudo apt install -y imagemagick
         convert -size 256x256 xc:lightgray app/WebDesigner.png
-
+        ls app
         # 创建完整的 .desktop 文件
         echo "[Desktop Entry]
         Type=Application
@@ -112,7 +112,7 @@ jobs:
         Comment=A web design tool
         Categories=Development;
         Terminal=false" > app/WebDesigner.desktop
-
+        ls app
         # 安装依赖并打包
         sudo apt update
         sudo apt install -y libfuse2 wget
