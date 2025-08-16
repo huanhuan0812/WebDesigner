@@ -84,13 +84,20 @@ jobs:
         ls
         mkdir -p app
         cp build/WebDesigner app/
+        wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        chmod +x linuxdeployqt-continuous-x86_64.AppImage
+        sudo mv linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin/linuxdeployqt
+        linuxdeployqt app/WebDesigner -appimage
     
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
       run: |
         ls
         mkdir -p app
+        macdeployqt build/WebDesigner.app
+        ls build
         cp build/WebDesigner.app/Contents/MacOS/WebDesigner app/
+        
     
     # Create archive
     - name: Create compressed archive
