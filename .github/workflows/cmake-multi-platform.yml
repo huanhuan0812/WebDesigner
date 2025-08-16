@@ -34,7 +34,7 @@ jobs:
 
     - name: update mingw
       if: matrix.os == 'windows-latest'
-      uses: msys2/setup-msys2@latest
+      uses: msys2/setup-msys2@v2
       with:
         mupdate: true
         install: >-
