@@ -72,3 +72,7 @@ if(MINGW)
     add_link_options(-lmingw32)
     add_link_options(-lqtmain)
 endif()
+
+if(WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows")
+endif()
