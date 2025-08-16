@@ -72,22 +72,25 @@ jobs:
     - name: Package Windows executable
       if: matrix.os == 'windows-latest'
       run: |
+        ls
         mkdir -p app
-        cp ${{ env.BUILD_TYPE }}/WebDesigner.exe app/
+        cp build/WebDesigner.exe app/
         cd app
         windeployqt WebDesigner.exe
     
     - name: Package Linux application
       if: matrix.os == 'ubuntu-latest'
       run: |
+        ls
         mkdir -p app
-        cp WebDesigner app/
+        cp build/WebDesigner app/
     
     - name: Package macOS application
       if: matrix.os == 'macOS-latest'
       run: |
+        ls
         mkdir -p app
-        cp WebDesigner.app/Contents/MacOS/WebDesigner app/
+        cp build/WebDesigner.app/Contents/MacOS/WebDesigner app/
     
     # Create archive
     - name: Create compressed archive
