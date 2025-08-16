@@ -64,8 +64,6 @@ jobs:
     # Install build tools (CMake + Ninja)
     - name: Install CMake
       uses: lukka/get-cmake@latest
-      with:
-        cmakeVersion: '3.25.0'
 
     - name: Install Ninja
       uses: seanmiddleditch/gha-setup-ninja@v3
