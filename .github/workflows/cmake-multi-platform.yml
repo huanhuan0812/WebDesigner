@@ -28,23 +28,20 @@ jobs:
     # Install Qt for each platform
     - name: Install Qt windows
       if: matrix.os == 'windows-latest'
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
-        version: '6.2.2'
         arch: 'win64_mingw'
 
     - name: Install Qt linux 
       if: matrix.os == 'ubuntu-latest'
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
-        version: '6.2.*'
         target: 'desktop'
 
     - name: Install Qt mac
       if: matrix.os == 'macOS-latest'
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
-        version: '6.2.*'
         target: 'desktop'
 
     # Install build tools (CMake + Ninja)
