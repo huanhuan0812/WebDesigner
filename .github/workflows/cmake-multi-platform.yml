@@ -49,6 +49,7 @@ jobs:
       uses: lukka/get-cmake@latest
 
     - name: Install Ninja
+      if: matrix.os != 'windows-latest'
       uses: seanmiddleditch/gha-setup-ninja@v3
 
     # Create build directory
