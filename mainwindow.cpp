@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "WebDesignScene.h"
 #include "WebElementProperties.h"
