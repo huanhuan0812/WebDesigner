@@ -101,7 +101,7 @@ jobs:
 
         # 生成一个简单的默认图标（白色背景 + 应用名首字母）
         sudo apt install -y imagemagick
-        convert -size 256x256 xc:lightgray -gravity center -pointsize 64 -fill black -draw "text 0,0 'WD'" app/WebDesigner.png
+        convert -size 256x256 xc:lightgray app/WebDesigner.png
 
         # 创建完整的 .desktop 文件
         echo "[Desktop Entry]
