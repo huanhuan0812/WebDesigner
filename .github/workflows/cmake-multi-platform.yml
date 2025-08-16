@@ -83,7 +83,7 @@ jobs:
       run: cd build && ninja
 
     # MinGW build in windows
-    - neme: Cmake MinGW build
+    - name: Cmake MinGW build
       if: matrix.os == 'windows-latest'
       run: |
         cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -B build
